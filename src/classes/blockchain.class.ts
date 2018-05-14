@@ -6,7 +6,7 @@ export class Blockchain {
   difficulty: number = 0;
   
   constructor(){
-    this.chain = [this.createGenesisBlock];
+    this.chain = [this.createGenesisBlock()];
     
   }
   

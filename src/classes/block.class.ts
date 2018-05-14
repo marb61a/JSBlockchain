@@ -12,7 +12,7 @@ export class Block {
     this.timestamp = timestamp;
     this.data = data;
     this.previousHash = previousHash;
-    this.hash = calculateHash();
+    this.hash = this.calculateHash();
 
   }
 

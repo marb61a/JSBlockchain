@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CryptoService } from './services/crypto.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+  blockchain = '';
+  
+  constructor(private cryptoSvc: CryptoService ){
+    this.blockchain = JSON.stringify(this.cryptoSvc.cryptoChain)
+  }
 }
