@@ -9,4 +9,15 @@
   </h2>
   {{ blockchain }}
 </div>
+<div>
+  <h2>
+    BlockChain State
+    <div *ngIf="cryptoSvc.cryptoChain.isChainValid; else invalid BlockChain">
+      Chain is in a <b>valid</b> state
+    </div>
+    <ng-template #invalidBlockChain>
+      Chain is in an <b>invalid</b> state
+    </ng-template>
+  </h2>
+</div>
 
