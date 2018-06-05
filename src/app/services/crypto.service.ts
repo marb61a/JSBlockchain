@@ -6,13 +6,18 @@ import { Transaction } from '../../classes/transaction.class';
 @Injectable()
 export class CryptoService {
   cryptoChain = new Blockchain();
+  unminedTxns: Transaction[] = [];
 
   constructor() {
-    console.log("Starting to mine a new block ....");
-    this.cryptoChain.addBlock( new Block(1, "05/05/2018", { amount: 10 }, ''));
+    this.unminedTxns.push(new Transaction(Date.now(), "wallet-Alice", "wallet-Bob", 50));
+    this.unminedTxns.push(new Transaction(Date.now(), "wallet-Bob", "wallet-Alice", 25));
     
-    console.log("Starting to mine a new block ....");
-    this.cryptoChain.addBlock(new Block(2, "06/05/2018", { amount: 25 }, ''));
+    console.log("\nMining a block");
+    this.cryptoChain.mineCurrentBlock("wallet-Miner49er", this.unminedTxns).then(() => {
+      console.log("\nBalance Alice : " + this.cryptoChain.getAddressBalance('wallet-Alice')); 
+      console.log("\nBalance Bob : " + this.cryptoChain.getAddressBalance('wallet-Bob'));   
+      console.log("\nBalance Miner49er : " + this.cryptoChain.getAddressBalance('wallet-Miner49er'));   
+    });
   }
 
 }

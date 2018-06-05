@@ -5,11 +5,24 @@ import { Transaction } from './transaction.class';
 export class Blockchain {
   chain: Block[] = [];
   difficulty: number = 3;
-  miningNumber: number = 50;
+  miningReward: number = 50;
+  registeredAddresses: string[] = [];
   
   constructor(){
-    this.chain = [this.createGenesisBlock()];
+    this.createGenesisBlock();
+    this.registeredAddresses = ["wallet-Alice", "wallet-Bob", "wallet-Charlie", "wallet-Miner49er"];
+    this.airdropCoins(100);
+  }
+  
+  airdropCoins(coins){
+    let airdropTxns: Transaction[] = [];
     
+    for(const addr of this.registeredAddresses){
+      let txn = new Transaction(Date.now(), "mint", addr, coins);
+      airdropTxns.push(txn);
+    }
+    
+    this.mineCurrentBlock("wallet-Miner49er", airdropTxns);
   }
   
   createGenesisBlock(){
@@ -43,11 +56,22 @@ export class Blockchain {
     return promise;
   }
   
+  validateTransaction(txn){
+    let payerAddr = txn.payerAddr;
+    let balance = this.getAddressBalance(payerAddr);
+    
+    if(balance >= txn.amount){
+       return true;
+    } else {
+      return false;   
+    }
+  }
+  
   getAddressBalance(addr){
     let balance = 0;
     
     for(const block of this.chain){
-      for(const txn of txns){
+      for(const txn of block.txns){
         if(txn.payerAddr === addr){
           balance -= txn.amount;
         }
