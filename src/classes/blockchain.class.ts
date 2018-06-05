@@ -1,9 +1,11 @@
 import * as SHA256 from  'crypto-js/sha256';
 import { Block } from './block.class';
+import { Transaction } from './transaction.class';
 
 export class Blockchain {
   chain: Block[];
   difficulty: number = 3;
+  miningNumber: number = 50;
   
   constructor(){
     this.chain = [this.createGenesisBlock()];
@@ -18,10 +20,20 @@ export class Blockchain {
     return this.chain[this.chain.length - 1];
   }
   
-  addBlock(newBlock, this.difficulty){
-    newBlock.previousHash = this.getLatestBlock().hash;
-    newBlock.mineBlock(difficulty);
-    this.chain.push(newBlock);
+//   addBlock(newBlock){
+//     newBlock.previousHash = this.getLatestBlock().hash;
+//     newBlock.mineBlock(this.difficulty);
+//     this.chain.push(newBlock);
+//   }
+  
+  mineCurrentBlock(transactions: Transaction[]): Promise<any> {
+    let promise = new Promise((resolve, reject) => {
+      let block = new Block(Date.now(), transactions, this.getLatestBlock().hash);
+      block.mineBlock(this.difficulty).then(() => {
+        console.log("Current block successfully mined");
+        this.chain.push(block);
+      });
+    });
   }
   
   isChainValid(){
