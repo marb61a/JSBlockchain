@@ -42,7 +42,15 @@ export class Blockchain {
 //   }
   
   mineCurrentBlock(minerAddr: string, transactions: Transaction[]): Promise<any> {
-    transactions.push(new Transaction(Date.now(), "mint", minerAddr, this.miningReward));
+    let validatedTxns: Transaction[] = [];
+    for(const txn of transactions){
+      if(txn.payerAddr === "mint" || this.validateTransaction(txn)){
+         validatedTxns.push(txn);
+      }
+    }
+    console.log("Validated Transactions : " + validatedTxns.length);
+    
+    validatedTxns.push(new Transaction(Date.now(), "mint", minerAddr, this.miningReward));
     
     let promise = new Promise((resolve, reject) => {
       let block = new Block(Date.now(), transactions, this.getLatestBlock().hash);
