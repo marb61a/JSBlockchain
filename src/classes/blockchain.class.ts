@@ -3,7 +3,7 @@ import { Block } from './block.class';
 import { Transaction } from './transaction.class';
 
 export class Blockchain {
-  chain: Block[];
+  chain: Block[] = [];
   difficulty: number = 3;
   miningNumber: number = 50;
   
@@ -13,7 +13,9 @@ export class Blockchain {
   }
   
   createGenesisBlock(){
-    return new Block(0, "07/05/2018", "Genesis Block", "0");
+    let txn = new Transaction(Date.now(), "mint", "genesis", 0);
+    let block = new Block(Date.now(), [txn], "0"); 
+    this.chain.push(block);
   }
   
   getLatestBlock(){
@@ -26,14 +28,37 @@ export class Blockchain {
 //     this.chain.push(newBlock);
 //   }
   
-  mineCurrentBlock(transactions: Transaction[]): Promise<any> {
+  mineCurrentBlock(minerAddr: string, transactions: Transaction[]): Promise<any> {
+    transactions.push(new Transaction(Date.now(), "mint", minerAddr, this.miningReward));
+    
     let promise = new Promise((resolve, reject) => {
       let block = new Block(Date.now(), transactions, this.getLatestBlock().hash);
       block.mineBlock(this.difficulty).then(() => {
         console.log("Current block successfully mined");
         this.chain.push(block);
+        resolve();
       });
     });
+    
+    return promise;
+  }
+  
+  getAddressBalance(addr){
+    let balance = 0;
+    
+    for(const block of this.chain){
+      for(const txn of txns){
+        if(txn.payerAddr === addr){
+          balance -= txn.amount;
+        }
+        
+        if(txn.payeeAddr === addr){
+          balance += txn.amount;
+        }
+      }
+    }
+    
+    return balance;
   }
   
   isChainValid(){
