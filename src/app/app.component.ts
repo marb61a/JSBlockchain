@@ -7,11 +7,19 @@ import { CryptoService } from './services/crypto.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  walletAddressForm: FormGroup;
   blockchain = '';
   balance: number = 0;
   
   constructor(private cryptoSvc: CryptoService ){
+    this.walletAddressForm = this.fb.group({
+      walletAddress: ['', Validators.required]
+    })
+    
     this.blockchain = JSON.stringify(this.cryptoSvc.cryptoChain)
+  }
+  
+  assignWalletAddress(){
+    console.log("Called assignWalletAddress");
   }
 }
