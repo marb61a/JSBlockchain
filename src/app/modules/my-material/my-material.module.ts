@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import {
-  MatAutoCompleteModule,
+  MatAutocompleteModule,
   MatButtonModule,
   MatButtonToggleModule,
   MatCardModule,
@@ -33,13 +33,13 @@ import {
   MatTooltipModule
 } from '@angular/material';
 
-import { cdkTableModule } from '@angular/cdk/table';
+import { CdkTableModule } from '@angular/cdk/table';
 import 'hammerjs';
 
 @NgModule({
   exports: [
-    cdkTableModule,
-    MatAutoCompleteModule,
+    CdkTableModule,
+    MatAutocompleteModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,

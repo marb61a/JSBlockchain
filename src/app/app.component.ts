@@ -9,6 +9,7 @@ import { CryptoService } from './services/crypto.service';
 export class AppComponent {
   title = 'app';
   blockchain = '';
+  balance: number = 0;
   
   constructor(private cryptoSvc: CryptoService ){
     this.blockchain = JSON.stringify(this.cryptoSvc.cryptoChain)
